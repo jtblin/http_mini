@@ -11,7 +11,7 @@ class HttpMini
   IGNORE_ERROR = true
 
   def self.VERSION
-    '0.1.0'
+    '0.1.1'
   end
 
   def initialize(url, opts = {})
@@ -41,6 +41,10 @@ class HttpMini
 
   def options
     request { |http| http.options(path) }
+  end
+
+  def ping
+    success? head
   end
 
   private
@@ -87,6 +91,10 @@ class HttpMini
 
   def ignore_error?
     opts[:ignore_error].nil? ? IGNORE_ERROR : opts[:ignore_error]
+  end
+
+  def success?(response)
+    response && response.code.to_i >= 200 && response.code.to_i < 300 ? true : false
   end
 
 end
