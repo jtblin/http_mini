@@ -9,14 +9,15 @@ a one liner to ping or get the response.
 
 ## Usage
 
-    response = HttpMini.new('http://www.google.com').get
-    puts response.status
+    response = HttpMini.new('http://www.google.com').head
+    puts response.code
 
-By default, HttpMini ignore errors and return nil in case of error.
+By default, HttpMini ignores errors and will return nil in case of error.
 If you want to raise error, you can set the option on initialization.
 You can also set values for timeouts.
 
-    response = HttpMini.new('http://www.google.com', {ignore_error: false, open_timeout: 5}).head
+    response = HttpMini.new('http://www.google.com', {ignore_error: false, open_timeout: 5}).get
+    puts response.body
 
 ## Author
 
