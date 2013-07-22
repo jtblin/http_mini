@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.email = %q{jtblin@gmail.com}
   s.homepage = %q{https://github.com/jtblin/http_mini}
   s.summary = %q{A truly minimalist Http Ruby client}
-  s.description = %q{A minimalist wrapper over Http::Net}
+  s.description = %q{A thin wrapper over URI and Http::Net}
   s.required_rubygems_version = ">= 1.3.6"
   s.add_development_dependency %q<sinatra>, [">= 1.3.0"]
 

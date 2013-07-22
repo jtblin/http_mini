@@ -3,7 +3,6 @@ require "uri"
 
 class HttpMini
 
-  attr_reader :uri
   attr_accessor :opts
 
   OPEN_TIMEOUT = 2
@@ -20,34 +19,55 @@ class HttpMini
   end
 
   def head
-    request { |http| http.head(path) }
+    request { |http| http.head(full_path) }
   end
 
   def get
-    request { |http| http.get(path) }
+    request { |http| http.get(full_path) }
   end
 
   def post(data)
-    request { |http| http.post(path, data) }
+    request { |http| http.post(full_path, data) }
   end
 
   def put(data)
-    request { |http| http.put(path, data) }
+    request { |http| http.put(full_path, data) }
   end
 
   def delete
-    request { |http| http.delete(path) }
+    request { |http| http.delete(full_path) }
   end
 
   def options
-    request { |http| http.options(path) }
+    request { |http| http.options(full_path) }
   end
 
-  def ping
+  def poke
     success? head
+  end
+  alias_method :ping, :poke
+
+  def uri(uri=nil)
+    uri.nil? ? @uri : (self.uri = uri) and self
+  end
+
+  def host
+    @uri.host || @uri.path.split('/').first
+  end
+
+  def port
+    @uri.port
+  end
+
+  def path(path=nil)
+    path.nil? ? clean_path(@uri.path) : set_path(path)
   end
 
   private
+
+  def uri=(uri)
+    @uri = URI.parse(uri) unless uri.nil? || uri.empty?
+  end
 
   def request
     begin
@@ -58,27 +78,32 @@ class HttpMini
   end
 
   def ssl?
-    uri.scheme == 'https'
+    @uri.scheme == 'https'
   end
 
   def set_timeout(http)
     http.open_timeout, http.read_timeout = timeouts
   end
 
-  def host
-    uri.host || uri.path.split('/').first
+  def full_path
+    @uri.query ? path + '?' + @uri.query : path
   end
 
-  def port
-    uri.port
+  def clean_path(path)
+    default_path remove_host_from_path(path)
   end
 
-  def path
-    root? uri.path.gsub(Regexp.new('^' + host), '')
+  def default_path(path)
+    path.to_s.empty? ? '/' : path
   end
 
-  def root?(path)
-    path.empty? ? '/' : path
+  def remove_host_from_path(path)
+    path.to_s.gsub Regexp.new('^' + host), ''
+  end
+
+  def set_path(path)
+    @uri.path = path
+    self
   end
 
   def timeouts
@@ -98,7 +123,7 @@ class HttpMini
   end
 
   def success?(response)
-    response && response.code.to_i >= 200 && response.code.to_i < 300 ? true : false
+    response && response.code.to_i >= 200 && response.code.to_i < 400
   end
 
 end
