@@ -51,18 +51,18 @@ class HttpMini
 
   def request
     begin
-      Net::HTTP.start(host, port) {|http| set_timeout(http) and yield(http) }
+      Net::HTTP.start(host, port, :use_ssl => ssl?) {|http| set_timeout(http) and yield(http) }
     rescue Exception => e
       raise e unless ignore_error?
     end
   end
 
-  def set_timeout(http)
-    http.open_timeout, http.read_timeout = timeouts
+  def ssl?
+    uri.scheme == 'https'
   end
 
-  def uri=(uri)
-    @uri = URI.parse(uri)
+  def set_timeout(http)
+    http.open_timeout, http.read_timeout = timeouts
   end
 
   def host
