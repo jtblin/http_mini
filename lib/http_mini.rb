@@ -66,7 +66,7 @@ class HttpMini
   end
 
   def host
-    uri.host
+    uri.host || uri.path.split('/').first
   end
 
   def port
@@ -74,7 +74,11 @@ class HttpMini
   end
 
   def path
-    uri.path.empty? ? '/' : uri.path
+    root? uri.path.gsub(Regexp.new('^' + host), '')
+  end
+
+  def root?(path)
+    path.empty? ? '/' : path
   end
 
   def timeouts
