@@ -1,7 +1,7 @@
 ## vNEXT
 
 ## v0.2.0
-* Ignore errors on `poke` only
+* Breaking change: ignore errors on `poke` only
 * Allow chaining of `uri` and `path` methods to allow changing the target and chaining an HTTP request
 * Add support for query string parameters
 

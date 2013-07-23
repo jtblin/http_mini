@@ -10,7 +10,7 @@ class HttpMini
   IGNORE_ERROR = true
 
   def self.VERSION
-    '0.1.1'
+    '0.2.0'
   end
 
   def initialize(url, opts = {})
@@ -43,7 +43,12 @@ class HttpMini
   end
 
   def poke
-    success? head
+    begin
+      success? head
+    rescue Exception => e
+      raise e unless ignore_error?
+      false
+    end
   end
   alias_method :ping, :poke
 
@@ -70,11 +75,7 @@ class HttpMini
   end
 
   def request
-    begin
-      Net::HTTP.start(host, port, :use_ssl => ssl?) {|http| set_timeout(http) and yield(http) }
-    rescue Exception => e
-      raise e unless ignore_error?
-    end
+    Net::HTTP.start(host, port, :use_ssl => ssl?) {|http| set_timeout(http) and yield(http) }
   end
 
   def ssl?
