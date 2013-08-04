@@ -12,6 +12,7 @@ Gem::Specification.new do |s|
   s.description = %q{A thin wrapper over URI and Http::Net}
   s.required_rubygems_version = ">= 1.3.6"
   s.add_development_dependency %q<sinatra>, [">= 1.3.0"]
+  s.license = 'BSD'
 
   s.extra_rdoc_files = [
     "LICENSE",

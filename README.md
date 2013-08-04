@@ -1,5 +1,7 @@
 # Http mini
 
+[![Gem Version](https://badge.fury.io/rb/http_mini.png)](http://badge.fury.io/rb/http_mini)
+
 A truly minimalist Http client for Ruby. When all you want is
 a one liner to ping or get the response from a web server.
 
@@ -41,5 +43,6 @@ Jerome Touffe-Blin, [@jtblin](https://twitter.com/jtlbin), [http://www.linkedin.
 
 ## License
 
-HttpMini is copyright 2013 Jerome Touffe-Blin and contributors. It is licensed under the BSD license. See the include LICENSE file for details.
+HttpMini is copyright 2013 Jerome Touffe-Blin and contributors. It is licensed under the BSD license.
+See the include LICENSE file for details.
 
