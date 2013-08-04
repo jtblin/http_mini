@@ -1,5 +1,8 @@
 ## vNEXT
 
+## v0.2.1
+* Add license to `gemspec`
+
 ## v0.2.0
 * Breaking change: ignore errors on `poke` only
 * Allow chaining of `uri` and `path` methods to allow changing the target and chaining an HTTP request
