@@ -31,7 +31,7 @@ a one liner to ping or get the response from a web server.
 * HEAD
 * GET
 * POST
-* UPDATE
+* PUT
 * DELETE
 * OPTIONS
 
