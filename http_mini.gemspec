@@ -14,6 +14,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'sinatra', '>= 1.3.0'
   s.add_development_dependency 'minitest', '~> 5'
   s.add_development_dependency 'webmock', '~> 1'
+  s.add_development_dependency 'coveralls'
   s.extra_rdoc_files = [
     "LICENSE",
     "README.md",
