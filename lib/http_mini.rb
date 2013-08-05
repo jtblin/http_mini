@@ -10,7 +10,7 @@ class HttpMini
   IGNORE_ERROR = true
 
   def self.VERSION
-    '0.2.1'
+    '0.2.2'
   end
 
   def initialize(url, opts = {})

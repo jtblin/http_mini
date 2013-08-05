@@ -1,6 +1,9 @@
 # Http mini
 
 [![Gem Version](https://badge.fury.io/rb/http_mini.png)](http://badge.fury.io/rb/http_mini)
+[![Build Status](https://travis-ci.org/jtblin/http_mini.png)](https://travis-ci.org/jtblin/http_mini)
+[![Coverage Status](https://coveralls.io/repos/jtblin/http_mini/badge.png?branch=master)](https://coveralls.io/r/jtblin/http_mini?branch=master)
+[![Code Climate](https://codeclimate.com/github/jtblin/http_mini.png)](https://codeclimate.com/github/jtblin/http_mini)
 
 A truly minimalist Http client for Ruby. When all you want is
 a one liner to ping or get the response from a web server.
