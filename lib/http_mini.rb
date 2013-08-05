@@ -53,7 +53,7 @@ class HttpMini
   alias_method :ping, :poke
 
   def uri(uri=nil)
-    uri.nil? ? @uri : (self.uri = uri) and self
+    uri.nil? ? @uri : ((self.uri = uri) and self)
   end
 
   def host
@@ -71,7 +71,11 @@ class HttpMini
   private
 
   def uri=(uri)
-    @uri = URI.parse(uri) unless uri.nil? || uri.empty?
+    @uri = URI.parse(handle_missing_scheme(uri)) unless uri.nil? || uri.empty?
+  end
+
+  def handle_missing_scheme(uri)
+    uri.match(/https?:\/\//) ? uri : "http://#{uri}"
   end
 
   def request
@@ -103,8 +107,13 @@ class HttpMini
   end
 
   def set_path(path)
-    @uri.path = path
+    @uri.path = path.match(/\?/) ? handle_query(path) : path
     self
+  end
+
+  def handle_query(path)
+    uri.query = path.gsub /.*\?/, ''
+    path.gsub /\?.*/, ''
   end
 
   def timeouts
