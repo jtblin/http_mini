@@ -1,5 +1,7 @@
 require 'sinatra'
 
+set :environment, ENV['RACK_ENV'].to_sym
+
 get '/' do
   puts "GET request"
   response.write "GET request"
