@@ -2,6 +2,7 @@
 
 ## v0.2.3
 * Allow to set request headers via options hash
+* Remove unnecessary code since 0.2.2 improved uri handling
 
 ## v0.2.2
 * Improve uri handling

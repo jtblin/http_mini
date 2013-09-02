@@ -13,8 +13,8 @@ class HttpMini
     '0.2.3'
   end
 
-  def initialize(url, opts = {})
-    self.uri = url
+  def initialize(uri, opts = {})
+    self.uri = uri
     self.opts = opts
   end
 
@@ -57,7 +57,7 @@ class HttpMini
   end
 
   def host
-    @uri.host || @uri.path.split('/').first
+    @uri.host
   end
 
   def port
@@ -65,7 +65,7 @@ class HttpMini
   end
 
   def path(path=nil)
-    path.nil? ? clean_path(@uri.path) : set_path(path)
+    path.nil? ? default_path(@uri.path) : set_path(path)
   end
 
   private
@@ -102,16 +102,8 @@ class HttpMini
     @uri.query ? path + '?' + @uri.query : path
   end
 
-  def clean_path(path)
-    default_path remove_host_from_path(path)
-  end
-
   def default_path(path)
     path.to_s.empty? ? '/' : path
-  end
-
-  def remove_host_from_path(path)
-    path.to_s.gsub Regexp.new('^' + host), ''
   end
 
   def set_path(path)
