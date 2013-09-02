@@ -49,6 +49,11 @@ class HttpMiniTest < Minitest::Test
       assert_equal false, HttpMini.new(@url).poke
     end
 
+    it 'sets the http headers from options hash' do
+      stub_request(:get, "www.google.com").with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'user-agent' => 'Fancy UserAgent Name'}).to_return(:body => "abc")
+      assert_equal 'abc', HttpMini.new(@url, headers: {'User-Agent' => 'Fancy UserAgent Name'}).get.body
+    end
+
     describe 'uri' do
 
       it 'parses the uri' do

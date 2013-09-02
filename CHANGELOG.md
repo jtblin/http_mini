@@ -1,5 +1,11 @@
 ## vNEXT
 
+## v0.2.3
+* Allow to set request headers via options hash
+
+## v0.2.2
+* Improve uri handling
+
 ## v0.2.1
 * Add license to `gemspec`
 

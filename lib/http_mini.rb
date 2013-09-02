@@ -10,7 +10,7 @@ class HttpMini
   IGNORE_ERROR = true
 
   def self.VERSION
-    '0.2.2'
+    '0.2.3'
   end
 
   def initialize(url, opts = {})
@@ -19,27 +19,27 @@ class HttpMini
   end
 
   def head
-    request { |http| http.head(full_path) }
+    request Net::HTTP::Head.new(full_path)
   end
 
   def get
-    request { |http| http.get(full_path) }
+    request Net::HTTP::Get.new(full_path)
   end
 
   def post(data)
-    request { |http| http.post(full_path, data) }
+    request Net::HTTP::Post.new(full_path), data
   end
 
   def put(data)
-    request { |http| http.put(full_path, data) }
+    request Net::HTTP::Put.new(full_path), data
   end
 
   def delete
-    request { |http| http.delete(full_path) }
+    request Net::HTTP::Delete.new(full_path)
   end
 
   def options
-    request { |http| http.options(full_path) }
+    request Net::HTTP::Options.new(full_path)
   end
 
   def poke
@@ -78,8 +78,8 @@ class HttpMini
     uri.match(/https?:\/\//) ? uri : "http://#{uri}"
   end
 
-  def request
-    Net::HTTP.start(host, port, :use_ssl => ssl?) {|http| set_timeout(http) and yield(http) }
+  def request(req, data=nil)
+    Net::HTTP.start(host, port, :use_ssl => ssl?) { |http| set_timeout(http) and http.request(set_headers(req), data) }
   end
 
   def ssl?
@@ -88,6 +88,14 @@ class HttpMini
 
   def set_timeout(http)
     http.open_timeout, http.read_timeout = timeouts
+  end
+
+  def set_headers(req)
+    headers.each { |key, value|  req[key] = value } and return req
+  end
+
+  def headers
+    opts[:headers] || {}
   end
 
   def full_path

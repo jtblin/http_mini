@@ -31,6 +31,9 @@ a one liner to ping or get the response from a web server.
     # or just the path
     http_request_html = http.path('/stdlib-1.9.3/libdoc/net/http/rdoc/Net/HTTPRequest.html').get.body
 
+    # Set http headers
+    puts HttpMini.new('http://www.google.com', headers: {'user-agent' => 'Fancy UserAgent Name'}).head.code
+
 ## HTTP verbs Support
 
 * HEAD
@@ -39,6 +42,12 @@ a one liner to ping or get the response from a web server.
 * PUT
 * DELETE
 * OPTIONS
+
+## Request options
+
+* `:headers` - http headers, defaults to {}
+* `:open_timeout` - number of seconds to wait for the connection to open, defaults to 2
+* `:read_timeout` - number of seconds to wait for one block to be read, defaults to 2
 
 ## Author
 
