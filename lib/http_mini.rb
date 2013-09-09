@@ -5,12 +5,10 @@ class HttpMini
 
   attr_accessor :opts
 
-  OPEN_TIMEOUT = 2
-  READ_TIMEOUT = 2
   IGNORE_ERROR = true
 
   def self.VERSION
-    '0.2.3'
+    '0.3.0'
   end
 
   def initialize(uri, opts = {})
@@ -19,27 +17,27 @@ class HttpMini
   end
 
   def head
-    request Net::HTTP::Head.new(full_path)
+    request Net::HTTP::Head.new(full_path, headers)
   end
 
   def get
-    request Net::HTTP::Get.new(full_path)
+    request Net::HTTP::Get.new(full_path, headers)
   end
 
   def post(data)
-    request Net::HTTP::Post.new(full_path), data
+    request Net::HTTP::Post.new(full_path, headers), data
   end
 
   def put(data)
-    request Net::HTTP::Put.new(full_path), data
+    request Net::HTTP::Put.new(full_path, headers), data
   end
 
   def delete
-    request Net::HTTP::Delete.new(full_path)
+    request Net::HTTP::Delete.new(full_path, headers)
   end
 
   def options
-    request Net::HTTP::Options.new(full_path)
+    request Net::HTTP::Options.new(full_path, headers)
   end
 
   def poke
@@ -65,7 +63,7 @@ class HttpMini
   end
 
   def path(path=nil)
-    path.nil? ? default_path(@uri.path) : set_path(path)
+    path.nil? ? @uri.request_uri : set_path(path)
   end
 
   private
@@ -75,23 +73,18 @@ class HttpMini
   end
 
   def handle_missing_scheme(uri)
-    uri.match(/https?:\/\//) ? uri : "http://#{uri}"
+    uri[0..3] == 'http' ? uri : "http://#{uri}"
   end
 
   def request(req, data=nil)
-    Net::HTTP.start(host, port, :use_ssl => ssl?) { |http| set_timeout(http) and http.request(set_headers(req), data) }
+    http.start { |http| http.request(req, data) }
   end
 
-  def ssl?
-    @uri.scheme == 'https'
-  end
-
-  def set_timeout(http)
-    http.open_timeout, http.read_timeout = timeouts
-  end
-
-  def set_headers(req)
-    headers.each { |key, value|  req[key] = value } and return req
+  def http
+    http = Net::HTTP.new(@uri.host, @uri.port)
+    http.use_ssl = @uri.instance_of?(URI::HTTPS)
+    http.open_timeout = http.read_timeout = opts[:timeout] if opts.key? :timeout
+    http
   end
 
   def headers
@@ -99,11 +92,7 @@ class HttpMini
   end
 
   def full_path
-    @uri.query ? path + '?' + @uri.query : path
-  end
-
-  def default_path(path)
-    path.to_s.empty? ? '/' : path
+    @uri.request_uri
   end
 
   def set_path(path)
@@ -114,18 +103,6 @@ class HttpMini
   def handle_query(path)
     uri.query = path.gsub /.*\?/, ''
     path.gsub /\?.*/, ''
-  end
-
-  def timeouts
-    [open_timeout, read_timeout]
-  end
-
-  def open_timeout
-    opts[:open_timeout].nil? ? OPEN_TIMEOUT : opts[:open_timeout]
-  end
-
-  def read_timeout
-    opts[:read_timeout].nil? ? READ_TIMEOUT : opts[:read_timeout]
   end
 
   def ignore_error?

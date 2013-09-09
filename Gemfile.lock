@@ -36,6 +36,7 @@ GEM
       crack (>= 0.3.2)
 
 PLATFORMS
+  java
   ruby
 
 DEPENDENCIES

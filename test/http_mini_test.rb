@@ -54,53 +54,57 @@ class HttpMiniTest < Minitest::Test
       assert_equal 'abc', HttpMini.new(@url, headers: {'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent' => 'Fancy UserAgent Name'}).get.body
     end
 
+    it 'uses the full path' do
+      stub_request(:get, "www.acme.com/foo?bar=baz").to_return(:status => 200)
+      HttpMini.new('http://www.acme.com/foo?bar=baz').get
+    end
+
     describe 'uri' do
 
       it 'parses the uri' do
-        @http = HttpMini.new @url
-        assert_equal 'www.google.com', @http.host
-        assert_equal '/', @http.path
+        http = HttpMini.new @url
+        assert_equal 'www.google.com', http.host
+        assert_equal '/', http.path
       end
 
       it 'parses the new uri' do
-        @http = HttpMini.new @url
-        @http.uri 'http://www.acme.com'
-        assert_equal 'www.acme.com', @http.host
+        http = HttpMini.new @url
+        http.uri 'http://www.acme.com'
+        assert_equal 'www.acme.com', http.host
       end
 
       it 'allows passing query string parameters' do
-        @http = HttpMini.new "#{@url}/?q=1"
-        assert_equal 'q=1', @http.uri.query
+        http = HttpMini.new "#{@url}/?q=1"
+        assert_equal 'q=1', http.uri.query
       end
 
       it 'returns the uri object' do
-        @http = HttpMini.new @url
-        assert @http.uri.kind_of?(URI::Generic), "Expected #{@http.uri} to be of kind of URI::Generic"
+        http = HttpMini.new @url
+        assert http.uri.kind_of?(URI::Generic), "Expected #{http.uri} to be of kind of URI::Generic"
       end
 
       it 'handles https' do
-        @http = HttpMini.new 'https://www.google.com'
-        assert_equal 443, @http.port
+        http = HttpMini.new 'https://www.google.com'
+        assert_equal 443, http.port
       end
 
       it 'handles missing scheme' do
-        @http = HttpMini.new 'www.google.com'
-        assert_equal 'www.google.com', @http.host
-        assert_equal 80, @http.port
+        http = HttpMini.new 'www.google.com'
+        assert_equal 'www.google.com', http.host
+        assert_equal 80, http.port
       end
 
       describe "path"  do
         it 'uses the new path' do
-          @http = HttpMini.new @url
-          @http.path '/newpath'
-          assert_equal '/newpath', @http.path
+          http = HttpMini.new @url
+          http.path '/newpath'
+          assert_equal '/newpath', http.path
         end
 
         it 'keeps the query string parameters' do
-          @http = HttpMini.new @url
-          @http.path '/newpath?q=1'
-          assert_equal '/newpath', @http.path
-          assert_equal 'q=1', @http.uri.query
+          http = HttpMini.new @url
+          http.path '/newpath?q=1'
+          assert_equal 'q=1', http.uri.query
         end
       end
     end

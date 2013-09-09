@@ -1,5 +1,10 @@
 ## vNEXT
 
+## v3.0.0
+* Performance improvements
+* Refactoring. As part of the refactoring, there is now only one option for timeout used for both open and read
+and no more default values.
+
 ## v0.2.3
 * Allow to set request headers via options hash
 * Remove unnecessary code since 0.2.2 improved uri handling
