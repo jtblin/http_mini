@@ -46,8 +46,8 @@ a one liner to ping or get the response from a web server.
 ## Request options
 
 * `:headers` - http headers, defaults to {}
-* `:open_timeout` - number of seconds to wait for the connection to open, defaults to 2
-* `:read_timeout` - number of seconds to wait for one block to be read, defaults to 2
+* `:timeout` - number of seconds to wait for the connection to open, number of seconds to wait for one block to be read
+* `:ignore_error` - ignore errors on poke, defaults to `true`
 
 ## Author
 
