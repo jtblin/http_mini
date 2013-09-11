@@ -59,6 +59,11 @@ class HttpMiniTest < Minitest::Test
       HttpMini.new('http://www.acme.com/foo?bar=baz').get
     end
 
+    it 'allows basic auth' do
+      stub_request(:get, "foo:bar@www.acme.com/").to_return(:status => 200)
+      HttpMini.new('http://foo:bar@www.acme.com/').get
+    end
+
     describe 'uri' do
 
       it 'parses the uri' do

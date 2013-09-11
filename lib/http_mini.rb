@@ -8,7 +8,7 @@ class HttpMini
   IGNORE_ERROR = true
 
   def self.VERSION
-    '0.3.0'
+    '0.3.1'
   end
 
   def initialize(uri, opts = {})
@@ -77,7 +77,7 @@ class HttpMini
   end
 
   def request(req, data=nil)
-    http.start { |http| http.request(req, data) }
+    http.start { |http| http.request(auth(req), data) }
   end
 
   def http
@@ -85,6 +85,11 @@ class HttpMini
     http.use_ssl = @uri.instance_of?(URI::HTTPS)
     http.open_timeout = http.read_timeout = opts[:timeout] if opts.key? :timeout
     http
+  end
+
+  def auth(req)
+    req.basic_auth(@uri.user, @uri.password) if @uri.user
+    req
   end
 
   def headers

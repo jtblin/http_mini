@@ -1,5 +1,8 @@
 ## vNEXT
 
+## v3.0.1
+* Basic auth
+
 ## v3.0.0
 * Performance improvements
 * Refactoring. As part of the refactoring, there is now only one option for timeout used for both open and read

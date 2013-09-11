@@ -34,6 +34,9 @@ a one liner to ping or get the response from a web server.
     # Set http headers
     puts HttpMini.new('http://www.google.com', headers: {'user-agent' => 'Fancy UserAgent Name'}).head.code
 
+    # Basic auth
+    puts HttpMini.new('http://foo:bar@www.acme.com').head.code
+
 ## HTTP verbs Support
 
 * HEAD
