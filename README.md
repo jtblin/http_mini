@@ -51,6 +51,7 @@ a one liner to ping or get the response from a web server.
 * `:headers` - http headers, defaults to {}
 * `:timeout` - number of seconds to wait for the connection to open, number of seconds to wait for one block to be read
 * `:ignore_error` - ignore errors on poke, defaults to `true`
+* `:unsafe` - ignore SSL errors, defaults to `false` except for poke
 
 ## Author
 

@@ -8,7 +8,7 @@ class HttpMini
   IGNORE_ERROR = true
 
   def self.VERSION
-    '0.3.1'
+    '0.3.2'
   end
 
   def initialize(uri, opts = {})
@@ -42,6 +42,7 @@ class HttpMini
 
   def poke
     begin
+      opts[:unsafe] = opts[:unsafe] != false
       success? head
     rescue Exception => e
       raise e unless ignore_error?
@@ -83,6 +84,8 @@ class HttpMini
   def http
     http = Net::HTTP.new(@uri.host, @uri.port)
     http.use_ssl = @uri.instance_of?(URI::HTTPS)
+    # TODO: add test
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE if http.use_ssl? && opts[:unsafe] == true
     http.open_timeout = http.read_timeout = opts[:timeout] if opts.key? :timeout
     http
   end
