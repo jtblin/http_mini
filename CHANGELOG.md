@@ -1,5 +1,11 @@
 ## vNEXT
 
+## v3.0.3
+* Require `openssl` to avoid errors on `unsafe` mode on certain cases
+
+## v3.0.2
+* Add `unsafe` option to bypass SSL certificates verification
+
 ## v3.0.1
 * Basic auth
 

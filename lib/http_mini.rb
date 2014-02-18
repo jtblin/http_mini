@@ -1,5 +1,6 @@
 require 'net/http'
-require "uri"
+require 'uri'
+require 'openssl'
 
 class HttpMini
 
@@ -8,7 +9,7 @@ class HttpMini
   IGNORE_ERROR = true
 
   def self.VERSION
-    '0.3.2'
+    '0.3.3'
   end
 
   def initialize(uri, opts = {})
